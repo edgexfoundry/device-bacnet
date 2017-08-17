@@ -1,0 +1,10 @@
+The following open source projects are referenced by the BACnet Device Service:
+
+Spring Boot (Apache 2.0) - https://projects.spring.io/spring-boot/
+https://github.com/spring-projects/spring-boot/blob/master/LICENSE.txt
+
+Spring Cloud (Apache 2.0) - http://projects.spring.io/spring-cloud/
+https://github.com/spring-cloud/spring-cloud-release/blob/master/LICENSE.txt
+
+GSON (Apache 2.0) - https://github.com/google/gson
+https://github.com/google/gson/blob/master/LICENSE
