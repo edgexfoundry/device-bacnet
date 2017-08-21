@@ -38,8 +38,8 @@ RUN apk add --update py-virtualenv build-base
 
 #copy JAR and property files to the image
 COPY *.jar $APP_DIR/$APP
-COPY *.properties $APP_DIR/
-COPY *.sh $APP_DIR/
+COPY docker-files/*.properties $APP_DIR/
+COPY docker-files/*.sh $APP_DIR/
 
 RUN mkdir -p "$VIRTUAL_ENV"
 RUN virtualenv -p python3 "$VIRTUAL_ENV"
