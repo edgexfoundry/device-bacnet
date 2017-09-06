@@ -14,7 +14,21 @@
 # limitations under the License.
 #
 ###############################################################################
-FROM alpine:3.4
+FROM maven:3.3-jdk-8-alpine
+
+COPY docker-files/pom.xml .
+
+RUN mvn dependency:copy -q
+
+FROM python:3.6-alpine3.6
+
+RUN mkdir /python
+
+COPY python /python
+
+RUN cd /python ; python setup.py sdist
+
+FROM alpine:3.6
 MAINTAINER Tyler Cox <tyler_cox@dell.com>
 
 # environment variables
@@ -30,14 +44,14 @@ ENV VIRTUAL_ENV="$PY_APP_DIR/virtualenv"
 
 RUN mkdir -p $PY_APP_DIR
 
-COPY python/$ARCHIVE $PY_APP_DIR/
+COPY --from=1 /python/dist/$ARCHIVE $PY_APP_DIR/
 
 RUN apk --update add openjdk8-jre
 RUN apk --no-cache add python3 ca-certificates
 RUN apk add --update py-virtualenv build-base
 
 #copy JAR and property files to the image
-COPY *.jar $APP_DIR/$APP
+COPY --from=0 *.jar $APP_DIR/$APP
 COPY docker-files/*.properties $APP_DIR/
 COPY docker-files/*.sh $APP_DIR/
 
