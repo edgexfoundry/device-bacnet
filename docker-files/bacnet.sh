@@ -3,4 +3,5 @@
 cd /edgex/edgex-resource-bacnet/virtualenv/bin/
 source activate
 python3 $4 -p $5 &
-java -jar /edgex/edgex-device-bacnet/$1 $2 $3
+cd /edgex/edgex-device-bacnet
+java -jar $1 $2 $3
