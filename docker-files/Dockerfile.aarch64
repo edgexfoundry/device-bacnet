@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 ###############################################################################
-# Docker image for Core Data micro service 
 FROM arm64v8/alpine:3.6
 MAINTAINER Federico Claramonte <fede.claramonte@caviumnetworks.com>
 
