@@ -23,17 +23,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.edgexfoundry</groupId>
 	<artifactId>device-bacnet</artifactId>
-	<version>0.2.0-SNAPSHOT</version>
+	<version>0.5.0-SNAPSHOT</version>
 	<name>EdgeX Foundry BACnet Micro Service</name>
 	<description>EdgeX Foundry BACnet Device Service - initially created by the EdgeX Foundry DS SDK</description>
 
 	<properties>
 		<spring.cloud.version>Brixton.SR5</spring.cloud.version>
-		<support-logging-client.version>0.2.0-SNAPSHOT</support-logging-client.version>
-		<core-domain.version>0.2.0-SNAPSHOT</core-domain.version>
-		<core-data-client.version>0.2.0-SNAPSHOT</core-data-client.version>
-		<core-metadata-client.version>0.2.0-SNAPSHOT</core-metadata-client.version>
-		<core-exception.version>0.2.0-SNAPSHOT</core-exception.version>
+		<support-logging-client.version>0.5.0-SNAPSHOT</support-logging-client.version>
+		<core-domain.version>0.5.0-SNAPSHOT</core-domain.version>
+		<core-data-client.version>0.5.0-SNAPSHOT</core-data-client.version>
+		<core-metadata-client.version>0.5.0-SNAPSHOT</core-metadata-client.version>
+		<core-exception.version>0.5.0-SNAPSHOT</core-exception.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
