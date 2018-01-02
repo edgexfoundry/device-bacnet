@@ -1,0 +1,150 @@
+# Copyright 2017 Dell Inc. All rights reserved.
+name: "KMC.BAC"
+manufacturer: "KMC"
+model: "BAC-121036CE"
+labels: 
+    - "thermostat"
+    - "industrial"
+description: "KMC BAC-121036CE BACnet thermostat"
+deviceResources:
+    -   
+        name: Temperature
+        description: "Get the current temperature"
+        attributes: 
+            { type: "analogValue", instance: "1", property: "presentValue" }
+        properties: 
+            value:
+                { type: "Float", size: "4", readWrite: "R", defaultValue: "0.00", minimum: "-99.99", maximum: "199.99"  }
+            units:
+                { type: "String", readWrite: "R", defaultValue: "Degrees Fahrenheit" }
+    -   
+        name: Humidity
+        description: "Get the current humidity"
+        attributes: 
+            { type: "analogValue", instance: "22", property: "presentValue" }
+        properties: 
+            value:
+                { type: "Float", size: "4", readWrite: "R", defaultValue: "0.00", minimum: "0.0", maximum: "100.00"  }
+            units:
+                { type: "String", readWrite: "R", defaultValue: "% Relative Humidity" }
+    -   
+        name: CoolingPoint
+        description: "The occupied cooling set point"
+        attributes: 
+            { type: "analogValue", instance: "20", property: "presentValue" }
+        properties: 
+            value:
+                { type: "Float", size: "4", readWrite: "RW", defaultValue: "0.00", minimum: "-100.00", maximum: "100.00"  }
+            units:
+                { type: "String", readWrite: "R", defaultValue: "Degrees Fahrenheit" }
+    -   
+        name: HeatingPoint
+        description: "The occupied heating set point"
+        attributes: 
+            { type: "analogValue", instance: "21", property: "presentValue" }
+        properties: 
+            value:
+                { type: "Float", size: "4", readWrite: "RW", defaultValue: "0.00", minimum: "-100.00", maximum: "100.00"  }
+            units:
+                { type: "String", readWrite: "R", defaultValue: "Degrees Fahrenheit" }
+
+resources:
+    -
+        name: Temperature
+        get:
+            -
+                { operation: "get", object: "Temperature", property: "value", parameter: "Temperature" }
+    -
+        name: Humidity
+        get:
+            -
+                { operation: "get", object: "Humidity", property: "value", parameter: "Humidity" }
+    -   
+        name: CoolingPoint
+        set:
+            -
+                { operation: "set", object: "CoolingPoint", property: "value", parameter: "CoolingPoint" }
+        get:
+            -
+                { operation: "get", object: "CoolingPoint", property: "value", parameter: "CoolingPoint" }
+    -   
+        name: HeatingPoint
+        set:
+            -
+                { operation: "set", object: "HeatingPoint", property: "value", parameter: "HeatingPoint" }
+        get:
+            -
+                { operation: "get", object: "HeatingPoint", property: "value", parameter: "HeatingPoint" }
+    -   
+        name: SetPoint
+        set:
+            -
+                { index: "1", operation: "set", resource: "CoolingPoint", parameter: "CoolingPoint" }
+            -
+                { index: "2", operation: "set", resource: "HeatingPoint", parameter: "HeatingPoint" }
+        get:
+            -
+                { index: "1", operation: "get", resource: "CoolingPoint", parameter: "CoolingPoint" }
+            -
+                { index: "2", operation: "get", resource: "HeatingPoint", parameter: "HeatingPoint" }
+                
+    -   
+        name: CurrentState
+        get:
+            -
+                { index: "1", operation: "get", resource: "Temperature", parameter: "Temperature" }
+            -
+                { index: "2", operation: "get", resource: "Humidity", parameter: "Humidity" }
+                
+    -
+        name: Query
+        get:
+            -
+                { index: "1", operation: "get", resource: "CurrentState" }
+            -
+                { index: "2", operation: "get", resource: "SetPoint" }
+
+commands: 
+  - 
+    name: CurrentState
+    get: 
+        path: "/api/v1/device/{deviceId}/CurrentState"
+        responses:
+          - 
+            code: "200"
+            description: "Get the current Humidity and Temperature"
+            expectedValues: ["Temperature","Humidity"]
+          -
+            code: "503"
+            description: "service unavailable"
+            expectedValues: []
+
+  - 
+    name: SetPoint
+    get:
+        path: "/api/v1/device/{deviceId}/SetPoint"
+        responses:
+          -
+            code: "200"
+            description: ""
+            expectedValues: ["CoolingPoint","HeatingPoint"]
+          -
+            code: "503"
+            description: "service unavailable"
+            expectedValues: []
+    put: 
+        path: "/api/v1/device/{deviceId}/SetPoint"
+        parameterNames: ["CoolingPoint","HeatingPoint"]
+        responses:
+          - 
+            code: "204"
+            description: "successfully set the heating and cooling points"
+            expectedValues: []
+          -
+            code: "400"
+            description: "bad request"
+            expectedValues: []
+          -
+            code: "503"
+            description: "service unavailable"
+            expectedValues: []  
