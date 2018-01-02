@@ -27,6 +27,7 @@ import org.edgexfoundry.controller.DeviceProfileClient;
 import org.edgexfoundry.controller.DeviceServiceClient;
 import org.edgexfoundry.controller.ProvisionWatcherClient;
 import org.edgexfoundry.domain.SimpleWatcher;
+import org.edgexfoundry.config.ApplicationProperties;
 import org.edgexfoundry.domain.meta.DeviceProfile;
 import org.edgexfoundry.domain.meta.DeviceService;
 import org.edgexfoundry.domain.meta.ProvisionWatcher;
@@ -34,12 +35,16 @@ import org.edgexfoundry.support.logging.client.EdgeXLogger;
 import org.edgexfoundry.support.logging.client.EdgeXLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.edgexfoundry.service.ProvisionService;
 
 @Repository
 public class WatcherStore {
 
 	private final static EdgeXLogger logger = EdgeXLoggerFactory.getEdgeXLogger(WatcherStore.class);
-	
+
+	@Autowired
+	private ProvisionService provisionservice;
+
 	@Autowired
 	private ProvisionWatcherClient provisionClient;
 	
@@ -49,7 +54,10 @@ public class WatcherStore {
 	private DeviceProfileClient profileClient;
 	@Autowired
 	private DeviceServiceClient serviceClient;
-	
+
+	@Autowired
+	private ApplicationProperties applicationProperties;
+
 	private List<ProvisionWatcher> watchers = new ArrayList<ProvisionWatcher>();
 
 	public List<ProvisionWatcher> getWatchers() {
@@ -136,7 +144,10 @@ public class WatcherStore {
 				DeviceService service = serviceClient.deviceService(deviceServiceId);
 				if (service.getAddressable().getName().equals(defaultWatchers.getService()[i]))
 					watcher.setService(service);
-				
+
+				if (applicationProperties.isAddDefaultDeviceProfiles()) {
+					provisionservice.doProvision();
+				}
 				DeviceProfile profile;
 				try {
 					profile = profileClient.deviceProfileForName(defaultWatchers.getProfile()[i]);
