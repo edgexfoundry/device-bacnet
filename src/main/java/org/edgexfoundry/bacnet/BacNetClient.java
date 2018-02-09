@@ -14,14 +14,18 @@
  * limitations under the License.
  *
  * @microservice:  device-bacnet
- * @author: Tyler Cox, Dell
+ * @original author: Tyler Cox, Dell
+ * @updated by: Smit Sheth, Mobiliya
  * @version: 1.0.0
  *******************************************************************************/
 package org.edgexfoundry.bacnet;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+
+import org.edgexfoundry.domain.ScanList;
 
 public interface BacNetClient {
 	
@@ -35,4 +39,11 @@ public interface BacNetClient {
 	@Consumes("application/json")
 	String write(String request);
 	
+	@GET
+	@Path("/initialize")
+	String initialize();
+
+	@GET
+	@Path("/scan")
+	ScanList scanForDevices();
 }

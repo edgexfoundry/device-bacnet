@@ -14,10 +14,14 @@
  * limitations under the License.
  *
  * @microservice:  device-bacnet
- * @author: Tyler Cox, Dell
+ # @original author: Tyler Cox, Dell
+ # @updated by: Smit Sheth, Mobiliya
  * @version: 1.0.0
  *******************************************************************************/
 package org.edgexfoundry.bacnet;
+
+import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.ProcessingException;
 
 import org.edgexfoundry.data.DeviceStore;
 import org.edgexfoundry.data.ObjectStore;
@@ -59,8 +63,17 @@ public class BACNetDriver {
 	BacNetClient bacNetClient;
 	
 	public ScanList discover() {
-		ScanList scan = new ScanList();
-		return scan;
+		ScanList availableList = new ScanList();
+
+		try {
+			availableList = bacNetClient.scanForDevices();
+			logger.info(availableList.toString());
+		} catch (InternalServerErrorException e) {
+			availableList = null;
+		} catch (ProcessingException e) {
+			availableList = null;
+		}
+		return availableList;
 	}
 	
 	// operation is get or set

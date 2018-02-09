@@ -14,13 +14,16 @@
  * limitations under the License.
  *
  * @microservice:  device-bacnet
- * @author: Tyler Cox, Dell
+ * @original author: Tyler Cox, Dell
+ * @updated by: Smit Sheth, Mobiliya
  * @version: 1.0.0
  *******************************************************************************/
 package org.edgexfoundry.bacnet;
 
+import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.edgexfoundry.domain.ScanList;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -64,6 +67,29 @@ public class BacNetClientImpl implements BacNetClient{
 			e.printStackTrace();
 			//disconnect(address);
 			return null;
+		} finally {
+			lock.unlock();
+		}
+	}
+	
+	@Override
+	public String initialize() {
+		lock.lock();
+		try {
+			return getClient().initialize();
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	@Override
+	public ScanList scanForDevices() {
+		lock.lock();
+		try {
+			ScanList scanList = getClient().scanForDevices();
+			for (Map<String, String> device : scanList.getScan())
+				;
+			return scanList;
 		} finally {
 			lock.unlock();
 		}
