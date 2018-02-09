@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # Copyright 2016-2017 Dell Inc.
+# Copyright 2017-2018 Mobiliya
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +15,8 @@
 # limitations under the License.
 #
 # @microservice:  device-bacnet
-# @author: Tyler Cox, Dell
+# @original author: Tyler Cox, Dell
+# @updated by: Smit Sheth, Mobiliya
 # @version: 1.0.0
 from flask import Flask, request
 from flask.json import jsonify
@@ -64,6 +66,14 @@ def flask_write():
         return bytes
     return jsonify(value=bytes)
 
+@app.route("/scan")
+def flask_scan():
+    scan_val = driver.scan()
+    if(scan_val is not None):
+    	scan_val = convert(driver.scan())
+    print("Discovered device:",scan_val)	
+    return  jsonify(scan=scan_val)
+   
 if __name__ == "__main__":
     global driver
     driver = StartServer()
