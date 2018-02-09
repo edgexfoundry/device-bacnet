@@ -1,4 +1,5 @@
 # Copyright 2016-2017 Dell Inc.
+# Copyright 2017-2018 Mobiliya
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +14,8 @@
 # limitations under the License.
 #
 # @microservice:  device-bacnet
-# @author: Tyler Cox, Dell
+# @original author: Tyler Cox, Dell
+# @updated by: Smit Sheth, Mobiliya
 # @version: 1.0.0
 import atexit, threading, socket, yaml, struct
 from bacpypes.core import run as run_bacpypes
@@ -35,6 +37,8 @@ from bacpypes.primitivedata import Null, Atomic, Integer, Unsigned, Real
 from bacpypes.constructeddata import Array, Any
 from bacpypes.basetypes import PropertyIdentifier, ServicesSupported
 from bacpypes.errors import DecodingError
+from bacpypes.iocb import IOCB
+
 
 def docker_test():
     if socket.gethostname() == "edgex-device-bacnet":
@@ -235,12 +239,6 @@ class BACNetDriver():
         print("wrote %s %s %s %s" % (address, obj_inst, prop_id, value))
 
         return n
-        
-class IOCB:
-    def __init__(self):
-        # requests and responses
-        self.ioRequest = None
-        self.ioResponse = None
 
         # each block gets a completion event
         self.ioComplete = threading.Event()
