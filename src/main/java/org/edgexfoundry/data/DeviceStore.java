@@ -22,6 +22,8 @@ package org.edgexfoundry.data;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.edgexfoundry.controller.AddressableClient;
@@ -118,6 +120,18 @@ public class DeviceStore {
 		} catch (javax.ws.rs.NotFoundException e) {
 			addressable = device.getAddressable();
 			addressable.setOrigin(System.currentTimeMillis());
+			//Split the device name to get ip address and port number of bacnet device found
+			String regexe="\\s([\\d\\.]+):";
+			Pattern pattern = Pattern.compile(regexe);
+			Matcher matcher = pattern.matcher(device.getName());
+			
+			if(matcher.find())
+				addressable.setAddress(matcher.group(1));
+			regexe=":([\\d]+)";
+			pattern = Pattern.compile(regexe);
+			matcher = pattern.matcher(device.getName());
+			if(matcher.find())
+				addressable.setPort(Integer.valueOf(matcher.group(1)));
 			logger.info("Creating new Addressable Object with name: " + addressable.getName() + ", Address:" + addressable);
 			String addressableId = addressableClient.add(addressable);
 			addressable.setId(addressableId);
