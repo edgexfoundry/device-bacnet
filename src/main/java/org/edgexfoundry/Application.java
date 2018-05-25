@@ -21,15 +21,13 @@ package org.edgexfoundry;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-//import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @EnableAsync
-// TODO 11: To enable consul support, uncomment the following line and the 
-// import, then add the application.properties files to docker-edgex-core-config-seed
-//@EnableDiscoveryClient
+@EnableDiscoveryClient
 public class Application {
 	public static ConfigurableApplicationContext ctx;
 
