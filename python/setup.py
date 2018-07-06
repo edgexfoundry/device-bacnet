@@ -61,6 +61,6 @@ setup(
 	
 	#if platform.system() == 'Linux':
 	#	requirements.extend([])
-    install_requires=['flask', 'bacpypes','pyyaml'],
+    install_requires=['flask==1.0.2', 'bacpypes==0.16.7','pyyaml==3.13'],
     
 )
