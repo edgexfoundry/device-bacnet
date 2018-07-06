@@ -142,8 +142,8 @@ class BACNetDriver(BIPSimpleApplication):
     def read(self, obj_type, obj_inst, prop_id, address):
         datatype = get_datatype(obj_type, prop_id)
         if not datatype:
-            print("invalid property %s for object type %s" % (prop_id,object_type))
-            return "error invalid property %s for object type %s" % (prop_id,object_type)
+            print("invalid property %s for object type %s" % (prop_id,obj_type))
+            return "error invalid property %s for object type %s" % (prop_id,obj_type)
 
         # build a request
         request = ReadPropertyRequest(objectIdentifier=(obj_type, obj_inst), propertyIdentifier=prop_id)
@@ -178,7 +178,7 @@ class BACNetDriver(BIPSimpleApplication):
         n = ""
         datatype = get_datatype(obj_type, prop_id)
         if not datatype:
-            return "error invalid property %s for object type %s" % (prop_id,object_type)
+            return "error invalid property %s for object type %s" % (prop_id,obj_type)
 
         # set a priority
         priority = 1 #o.get('priority') if o.get('priority') else 1
