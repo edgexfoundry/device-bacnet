@@ -16,9 +16,11 @@
 ###############################################################################
 FROM maven:3.3-jdk-8-alpine
 
+ARG MVN_COMMAND="mvn dependency:copy -q"
+
 COPY docker-files/pom.xml .
 
-RUN mvn dependency:copy -q
+RUN $MVN_COMMAND
 
 FROM python:3.6-alpine3.6
 
